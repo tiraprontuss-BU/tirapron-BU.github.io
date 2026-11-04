@@ -1,0 +1,691 @@
+/* ==================================================
+   ตัวแปรสีและการตั้งค่าพื้นฐาน (CSS Variables)
+   ================================================== */
+:root {
+    /* โทนสี Dark Theme (ค่าเริ่มต้น) */
+    --bg-color: #0B0E14;
+    --bg-gradient: linear-gradient(135deg, #0B0E14 0%, #151A28 50%, #0F172A 100%);
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    
+    /* สีหลัก */
+    --primary-color: #8B5CF6; /* Purple */
+    --primary-hover: #7C3AED;
+    --secondary-color: #3B82F6; /* Blue */
+    --accent-color: #0EA5E9;
+    
+    /* Glassmorphism สำหรับโหมดมืด */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    /* โครงสร้าง */
+    --nav-height: 80px;
+    --border-radius: 16px;
+    --transition: all 0.3s ease;
+}
+
+/* ตัวแปรสำหรับ Light Mode */
+[data-theme="light"] {
+    --bg-color: #F8FAFC;
+    --bg-gradient: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 50%, #F1F5F9 100%);
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    
+    --primary-color: #6D28D9;
+    --primary-hover: #5B21B6;
+    --secondary-color: #2563EB;
+    
+    /* Glassmorphism สำหรับโหมดสว่าง */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+/* ==================================================
+   ตั้งค่าเริ่มต้น (Reset & Global)
+   ================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Kanit', sans-serif;
+    background-color: var(--bg-color);
+    background-image: var(--bg-gradient);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background var(--transition), color var(--transition);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* ==================================================
+   UI Components (ส่วนประกอบทั่วไป)
+   ================================================== */
+/* Glass Card Style */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition);
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+/* Typography */
+.section-title {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-primary);
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 2px;
+}
+
+.mt-4 { margin-top: 1.5rem; }
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-outline:hover {
+    background: var(--primary-color);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.btn-sm {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+}
+
+/* ==================================================
+   Layout & Sections
+   ================================================== */
+section {
+    padding: 100px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Navigation Bar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    transition: var(--transition);
+}
+
+.navbar.scrolled {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.logo span {
+    color: var(--primary-color);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-color);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+#theme-toggle {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+#theme-toggle:hover {
+    color: var(--primary-color);
+}
+
+.hamburger {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+/* Section 1: Hero */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    padding-top: var(--nav-height);
+}
+
+.hero-content {
+    flex: 1;
+}
+
+.greeting {
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.name {
+    font-size: 3.5rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.highlight {
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.role {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+}
+
+.description {
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.img-container {
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--glass-bg), rgba(139, 92, 246, 0.1));
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Section 2: About */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.about-info, .about-details {
+    padding: 2.5rem;
+}
+
+.about-grid h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.about-grid p {
+    color: var(--text-secondary);
+}
+
+.hobby-list li {
+    margin-bottom: 0.8rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hobby-list i {
+    color: var(--secondary-color);
+    width: 20px;
+}
+
+/* Section 3: Education (Timeline) */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    height: 100%;
+    width: 2px;
+    background: var(--glass-border);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    margin-left: 50px;
+}
+
+.timeline-dot {
+    position: absolute;
+    top: 2rem;
+    left: -35px;
+    width: 12px;
+    height: 12px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.timeline-year {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--primary-color);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.timeline-content h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
+}
+
+.timeline-content h4 {
+    color: var(--secondary-color);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-detail {
+    color: var(--text-secondary);
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+/* Section 4: Skills */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.skill-card {
+    padding: 1.5rem;
+}
+
+.skill-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.skill-icon {
+    font-size: 2rem;
+}
+
+.skill-card h4 {
+    font-weight: 500;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--glass-border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 4px;
+    width: 0; /* เริ่มต้นที่ 0 เพื่อทำ Animation */
+    transition: width 1.5s ease-in-out;
+}
+
+/* Section 5: Projects */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.project-card {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-img {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.project-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-img img {
+    transform: scale(1.05);
+}
+
+.project-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.project-content h3 {
+    margin-bottom: 0.5rem;
+}
+
+.project-content p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    flex: 1;
+}
+
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tech-stack span {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--accent-color);
+}
+
+/* Section 6: Contact */
+.contact-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem;
+    text-align: center;
+}
+
+.contact-desc {
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: var(--transition);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+}
+
+.social-btn.email:hover { background: #EA4335; color: white; border-color: #EA4335; }
+.social-btn.facebook:hover { background: #1877F2; color: white; border-color: #1877F2; }
+.social-btn.instagram:hover { background: #E4405F; color: white; border-color: #E4405F; }
+.social-btn.github:hover { background: #333; color: white; border-color: #333; }
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    margin-top: 5rem;
+}
+
+/* Back to Top Button */
+#back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 99;
+}
+
+#back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#back-to-top:hover {
+    background: var(--primary-hover);
+    transform: translateY(-5px);
+}
+
+/* ==================================================
+   Animations
+   ================================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==================================================
+   Responsive Design
+   ================================================== */
+@media screen and (max-width: 992px) {
+    .hero {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding-top: 120px;
+    }
+    
+    .description {
+        margin: 0 auto 2rem;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+    
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .nav-links {
+        position: absolute;
+        top: var(--nav-height);
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - var(--nav-height));
+        background: var(--bg-color);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        transition: 0.4s ease-in-out;
+    }
+    
+    .nav-links.active {
+        left: 0;
+    }
+    
+    .hamburger {
+        display: block;
+    }
+    
+    .name {
+        font-size: 2.5rem;
+    }
+    
+    .img-container {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .contact-container {
+        padding: 2rem 1rem;
+    }
+    
+    .social-links {
+        flex-direction: column;
+    }
+}
